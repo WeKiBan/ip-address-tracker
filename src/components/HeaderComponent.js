@@ -62,6 +62,7 @@ const InfoContainer = styled.div`
 const Info = styled.div`
   text-align: center;
   width: 100%;
+  max-width: 100%;
   h3 {
     text-transform: uppercase;
     color: hsl(0, 0%, 59%);
@@ -74,6 +75,8 @@ const Info = styled.div`
     font-size: 20px;
     font-weight: 400;
     color: hsl(0, 0%, 17%);
+    word-break: break-all;
+    white-space: normal;
   }
 `;
 
@@ -83,6 +86,7 @@ const Chevron = styled(FaChevronRight)`
 
 function HeaderComponent({ IP, setIP, fetchGeo, geo }) {
   const { city, isp, ip, timezone } = geo;
+
   return (
     <HeaderComponentStyled>
       <Header>IP Address Tracker</Header>

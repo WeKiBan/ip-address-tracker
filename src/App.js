@@ -5,7 +5,7 @@ import HeaderComponent from './components/HeaderComponent';
 import MapComponent from './components/MapComponent';
 
 function App() {
-  const [IP, setIP] = useState();
+  const [IP, setIP] = useState('');
   const [geo, setGeo] = useState({
     ip: '192.212.174.101',
     isp: 'Southern California Edison',
@@ -21,8 +21,13 @@ function App() {
     );
 
     const data = await response.json();
-    setGeo(data);
-    return;
+
+    return setGeo({
+      ip: data.ip,
+      isp: data.isp,
+      city: data.location.city,
+      timezone: data.location.timezone,
+    });
   };
 
   useEffect(() => {
@@ -44,7 +49,7 @@ function App() {
         fetchGeo={() => fetchGeo(IP)}
         geo={geo}
       />
-      <MapComponent position={position} />
+      <MapComponent IP={geo.ip} position={position} />
     </div>
   );
 }
