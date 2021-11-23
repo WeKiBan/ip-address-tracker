@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import backgroundImg from '../images/pattern-bg.png';
 import { FaChevronRight } from 'react-icons/fa';
+import { css } from '@emotion/react';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const HeaderComponentStyled = styled.div`
   display: flex;
@@ -57,6 +59,14 @@ const InfoContainer = styled.div`
   border-radius: 10px;
   padding: 25px;
   z-index: 1000;
+  min-height: 300px;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Info = styled.div`
@@ -84,35 +94,43 @@ const Chevron = styled(FaChevronRight)`
   color: #fff;
 `;
 
-function HeaderComponent({ IP, setIP, fetchGeo, geo }) {
+function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading }) {
   const { city, isp, ip, timezone } = geo;
 
   return (
     <HeaderComponentStyled>
       <Header>IP Address Tracker</Header>
       <InputContainer>
-        <Input onChange={(e) => setIP(e.target.value)} type="text" value={IP} />
+        <Input onChange={(e) => setIP(e.target.value)} type="text" value={IP} placeholder="Enter IP Address..." />
         <Button onClick={fetchGeo}>
           <Chevron />
         </Button>
       </InputContainer>
       <InfoContainer>
-        <Info>
-          <h3>Ip address</h3>
-          <p>{ip}</p>
-        </Info>
-        <Info>
-          <h3>Location</h3>
-          <p>{city}</p>
-        </Info>
-        <Info>
-          <h3>Timezone</h3>
-          <p>UTC {timezone}</p>
-        </Info>
-        <Info>
-          <h3>Isp</h3>
-          <p>{isp}</p>
-        </Info>
+        {isLoading ? (
+          <LoadingContainer>
+            <ClipLoader />
+          </LoadingContainer>
+        ) : (
+          <>
+            <Info>
+              <h3>Ip address</h3>
+              <p>{ip}</p>
+            </Info>
+            <Info>
+              <h3>Location</h3>
+              <p>{city}</p>
+            </Info>
+            <Info>
+              <h3>Timezone</h3>
+              <p>UTC {timezone}</p>
+            </Info>
+            <Info>
+              <h3>Isp</h3>
+              <p>{isp}</p>
+            </Info>
+          </>
+        )}
       </InfoContainer>
     </HeaderComponentStyled>
   );
