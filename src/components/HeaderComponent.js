@@ -56,6 +56,7 @@ const InfoContainer = styled.div`
   width: 85%;
   border-radius: 10px;
   padding: 25px;
+  z-index: 1000;
 `;
 
 const Info = styled.div`
@@ -80,32 +81,33 @@ const Chevron = styled(FaChevronRight)`
   color: #fff;
 `;
 
-function HeaderComponent() {
+function HeaderComponent({ IP, setIP, fetchGeo, geo }) {
+  const { city, isp, ip, timezone } = geo;
   return (
     <HeaderComponentStyled>
       <Header>IP Address Tracker</Header>
       <InputContainer>
-        <Input value="192.212.174.101" />
-        <Button>
+        <Input onChange={(e) => setIP(e.target.value)} type="text" value={IP} />
+        <Button onClick={fetchGeo}>
           <Chevron />
         </Button>
       </InputContainer>
       <InfoContainer>
         <Info>
           <h3>Ip address</h3>
-          <p>192.212.174.101</p>
+          <p>{ip}</p>
         </Info>
         <Info>
           <h3>Location</h3>
-          <p>Brooklyn, NY 10001</p>
+          <p>{city}</p>
         </Info>
         <Info>
           <h3>Timezone</h3>
-          <p>UTC -05:00</p>
+          <p>UTC {timezone}</p>
         </Info>
         <Info>
           <h3>Isp</h3>
-          <p>SpaceX Starlink</p>
+          <p>{isp}</p>
         </Info>
       </InfoContainer>
     </HeaderComponentStyled>
