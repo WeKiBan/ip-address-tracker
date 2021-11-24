@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import backgroundImg from '../images/pattern-bg.png';
 import { FaChevronRight } from 'react-icons/fa';
-import { css } from '@emotion/react';
 import BarLoader from 'react-spinners/BarLoader';
 
 const HeaderComponentStyled = styled.div`
@@ -31,7 +30,7 @@ const InputWrapper = styled.div`
   border-radius: 10px;
   margin-bottom: 25px;
   align-items: center;
-  border: ${({ ipIsInvalid }) => (ipIsInvalid ? '3px solid red' : 'none')};
+  border: ${({ ipIsInvalid }) => (ipIsInvalid ? '3px solid #df4759' : 'none')};
 `;
 
 const InputContainer = styled.div`
@@ -62,7 +61,7 @@ const Button = styled.button`
 
 const Error = styled.p`
   display: ${({ ipIsInvalid }) => (ipIsInvalid ? 'block' : 'none')};
-  color: red;
+  color: #df4759;
   padding: 10px;
 `;
 
@@ -78,11 +77,17 @@ const InfoContainer = styled.div`
   min-height: 300px;
 `;
 
-const LoadingContainer = styled.div`
+const Container = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
+`;
+
+const ApiError = styled.p`
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
 `;
 
 const Info = styled.div`
@@ -110,7 +115,15 @@ const Chevron = styled(FaChevronRight)`
   color: #fff;
 `;
 
-function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading, ipIsInvalid }) {
+function HeaderComponent({
+  IP,
+  setIP,
+  fetchGeo,
+  geo,
+  isLoading,
+  ipIsInvalid,
+  showError,
+}) {
   const { city, isp, ip, timezone } = geo;
 
   return (
@@ -135,9 +148,15 @@ function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading, ipIsInvalid }) {
 
       <InfoContainer>
         {isLoading ? (
-          <LoadingContainer>
+          <Container>
             <BarLoader />
-          </LoadingContainer>
+          </Container>
+        ) : showError ? (
+          <Container>
+            <ApiError>
+              Unable to locate IP Address <br /> Please try a different address
+            </ApiError>
+          </Container>
         ) : (
           <>
             <Info>

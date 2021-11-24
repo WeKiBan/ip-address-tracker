@@ -17,6 +17,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [ipIsInvalid, setIpIsInvalid] = useState(false);
   const firstUpdate = useRef(true);
+  const [showError, setShowError] = useState(false);
 
   const fetchGeo = async (ipAddress) => {
     if (!ValidateIPaddress(ipAddress)) {
@@ -25,21 +26,27 @@ function App() {
       setTimeout(() => setIpIsInvalid(false), 3000);
       return;
     }
+    setShowError(false);
     setIsLoading(true);
-    const response = await fetch(
-      `https://geo.ipify.org/api/v2/country,city?apiKey=at_pmVqW5gcyWCvjJkP882CUIaVoEoMn&ipAddress=${ipAddress}`
-    );
+    try {
+      const response = await fetch(
+        `https://geo.ipify.org/api/v2/country,city?apiKey=at_pmVqW5gcyWCvjJkP882CUIaVoEoMn&ipAddress=${ipAddress}`
+      );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    setGeo({
-      ip: data.ip,
-      isp: data.isp,
-      city: data.location.city,
-      timezone: data.location.timezone,
-      lat: data.location.lat,
-      lng: data.location.lng,
-    });
+      setGeo({
+        ip: data.ip,
+        isp: data.isp,
+        city: data.location.city,
+        timezone: data.location.timezone,
+        lat: data.location.lat,
+        lng: data.location.lng,
+      });
+    } catch (e) {
+      console.error(e);
+      setShowError(true);
+    }
 
     setIsLoading(false);
 
@@ -64,6 +71,7 @@ function App() {
         fetchGeo={() => fetchGeo(IP)}
         geo={geo}
         isLoading={isLoading}
+        showError={showError}
       />
       <MapComponent IP={geo.ip} position={position} />
     </div>
