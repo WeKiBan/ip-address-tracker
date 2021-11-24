@@ -27,7 +27,8 @@ const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 85%;
-  border-radius: 10px;
+  max-width: 600px;
+  border-radius: 20px;
   margin-bottom: 25px;
   align-items: center;
   border: ${({ ipIsInvalid }) => (ipIsInvalid ? '3px solid #df4759' : 'none')};
@@ -37,8 +38,9 @@ const InputContainer = styled.div`
   display: flex;
   min-height: 60px;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 const Input = styled.input`
@@ -57,6 +59,7 @@ const Button = styled.button`
   width: 60px;
   border: none;
   background: hsl(0, 0%, 17%);
+  cursor: pointer;
 `;
 
 const Error = styled.p`
@@ -71,7 +74,8 @@ const InfoContainer = styled.div`
   grid-gap: 22px;
   background: #fff;
   width: 85%;
-  border-radius: 10px;
+  max-width: 1200px;
+  border-radius: 20px;
   padding: 25px;
   z-index: 1000;
   min-height: 300px;
