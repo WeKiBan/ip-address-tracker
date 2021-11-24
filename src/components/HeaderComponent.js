@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import backgroundImg from '../images/pattern-bg.png';
 import { FaChevronRight } from 'react-icons/fa';
 import { css } from '@emotion/react';
-import ClipLoader from 'react-spinners/ClipLoader';
+import BarLoader from 'react-spinners/BarLoader';
 
 const HeaderComponentStyled = styled.div`
   display: flex;
@@ -24,12 +24,21 @@ const Header = styled.h1`
   font-weight: 400;
 `;
 
-const InputContainer = styled.div`
+const InputWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   width: 85%;
   border-radius: 10px;
   margin-bottom: 25px;
+  align-items: center;
+  border: ${({ ipIsInvalid }) => (ipIsInvalid ? '3px solid red' : 'none')};
+`;
+
+const InputContainer = styled.div`
+  display: flex;
   min-height: 60px;
+  width: 100%;
+  border-radius: 10px;
   overflow: hidden;
 `;
 
@@ -41,6 +50,7 @@ const Input = styled.input`
   padding-left: 20px;
   padding-right: 20px;
   font-weight: 300;
+  box-sizing: border-box;
 `;
 
 const Button = styled.button`
@@ -48,6 +58,12 @@ const Button = styled.button`
   width: 60px;
   border: none;
   background: hsl(0, 0%, 17%);
+`;
+
+const Error = styled.p`
+  display: ${({ ipIsInvalid }) => (ipIsInvalid ? 'block' : 'none')};
+  color: red;
+  padding: 10px;
 `;
 
 const InfoContainer = styled.div`
@@ -94,22 +110,33 @@ const Chevron = styled(FaChevronRight)`
   color: #fff;
 `;
 
-function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading }) {
+function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading, ipIsInvalid }) {
   const { city, isp, ip, timezone } = geo;
 
   return (
     <HeaderComponentStyled>
       <Header>IP Address Tracker</Header>
-      <InputContainer>
-        <Input onChange={(e) => setIP(e.target.value)} type="text" value={IP} placeholder="Enter IP Address..." />
-        <Button onClick={fetchGeo}>
-          <Chevron />
-        </Button>
-      </InputContainer>
+      <InputWrapper ipIsInvalid={ipIsInvalid}>
+        <InputContainer>
+          <Input
+            onChange={(e) => setIP(e.target.value)}
+            type="text"
+            value={IP}
+            placeholder="Enter IP Address..."
+          />
+          <Button onClick={fetchGeo}>
+            <Chevron />
+          </Button>
+        </InputContainer>
+        <Error ipIsInvalid={ipIsInvalid}>
+          Please enter a valid IP address...
+        </Error>
+      </InputWrapper>
+
       <InfoContainer>
         {isLoading ? (
           <LoadingContainer>
-            <ClipLoader />
+            <BarLoader />
           </LoadingContainer>
         ) : (
           <>
