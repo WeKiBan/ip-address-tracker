@@ -33,9 +33,6 @@ function MapComponent({ position, IP }) {
       dragging={false}
       touchZoom={false}
       doubleClickZoom={false}
-      closePopupOnClick={false}
-      zoomSnap={false}
-      zoomDelta={false}
       trackResize={true}
     >
       <ChangeView center={position} zoom={13} />

@@ -70,15 +70,18 @@ const Error = styled.p`
 
 const InfoContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
   grid-gap: 22px;
   background: #fff;
   width: 85%;
   max-width: 1200px;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 25px;
   z-index: 1000;
   min-height: 300px;
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    min-height: 100px;
+  }
 `;
 
 const Container = styled.div`
@@ -98,6 +101,14 @@ const Info = styled.div`
   text-align: center;
   width: 100%;
   max-width: 100%;
+  @media (min-width: 768px) {
+    text-align: left;
+    border-right: #d4d4d4 1px solid;
+    :last-of-type {
+      border-right: none;
+    }
+  }
+
   h3 {
     text-transform: uppercase;
     color: hsl(0, 0%, 59%);
