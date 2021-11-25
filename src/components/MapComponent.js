@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  ZoomControl,
+} from 'react-leaflet';
 import locationIcon from '../images/icon-location.svg';
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -9,6 +16,7 @@ delete L.Icon.Default.prototype._getIconUrl;
 const markerIcon = new L.Icon({
   iconUrl: locationIcon,
   iconSize: [50, 60],
+  iconAnchor: [20, 60],
   popupAnchor: [0, -20],
 });
 
@@ -30,16 +38,20 @@ function MapComponent({ position, IP }) {
       zoom={13}
       scrollWheelZoom={false}
       zoomControl={false}
-      dragging={false}
-      touchZoom={false}
+      dragging={true}
+      touchZoom={true}
       doubleClickZoom={false}
       trackResize={true}
     >
+      <ZoomControl position="bottomright"  />
       <ChangeView center={position} zoom={13} />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <Marker icon={markerIcon} position={position}>
+        <Popup>{IP}</Popup>
+      </Marker>
       <Marker icon={markerIcon} position={position}>
         <Popup>{IP}</Popup>
       </Marker>
