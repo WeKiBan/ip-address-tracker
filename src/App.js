@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import './Reset.css';
-import HeaderComponent from './components/HeaderComponent';
-import MapComponent from './components/MapComponent';
-import { ValidateIPaddress } from './helper functions/validateIpAddress';
+import HeaderComponent from './Components/HeaderComponent';
+import MapComponent from './Components/MapComponent';
+import { validateIPaddress } from './HelperFunctions/validateIpAddress';
+import Theme from './Theme';
 
 function App() {
   // variable to check if this is the first time app is loading
@@ -24,7 +25,7 @@ function App() {
   // async function that fetches data from the api
   const fetchGeo = async (ipAddress) => {
     // check to see if input is valid
-    if (!ValidateIPaddress(ipAddress)) {
+    if (!validateIPaddress(ipAddress)) {
       setIpIsInvalid(true);
 
       setTimeout(() => setIpIsInvalid(false), 3000);
@@ -74,16 +75,18 @@ function App() {
 
   return (
     <div className="App">
-      <HeaderComponent
-        ipIsInvalid={ipIsInvalid}
-        IP={IP}
-        setIP={setIP}
-        fetchGeo={() => fetchGeo(IP)}
-        geo={geo}
-        isLoading={isLoading}
-        showError={showError}
-      />
-      <MapComponent IP={geo.ip} position={position} />
+      <Theme>
+        <HeaderComponent
+          ipIsInvalid={ipIsInvalid}
+          IP={IP}
+          setIP={setIP}
+          fetchGeo={() => fetchGeo(IP)}
+          geo={geo}
+          isLoading={isLoading}
+          showError={showError}
+        />
+        <MapComponent IP={geo.ip} position={position} />
+      </Theme>
     </div>
   );
 }

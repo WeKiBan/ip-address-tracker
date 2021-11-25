@@ -14,7 +14,7 @@ const markerIcon = new L.Icon({
 
 const MapComponentStyled = styled(MapContainer)`
   width: 100%;
-  height: 65vh;
+  flex-grow: 1;
 `;
 
 function MapComponent({ position, IP }) {

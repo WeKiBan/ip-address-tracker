@@ -5,22 +5,27 @@ import { FaChevronRight } from 'react-icons/fa';
 import BarLoader from 'react-spinners/BarLoader';
 
 const HeaderComponentStyled = styled.div`
+  position: relative;
   display: flex;
-  align-items: center;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   background: url(${backgroundImg});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 200px;
   height: 35vh;
+  max-height: 225px;
+  font-family: ${({ theme }) => theme.font.fontFamily};
+  padding-bottom: 20px;
 `;
 
 const Header = styled.h1`
-  font-size: 25px;
-  margin: 25px 0;
+  margin: 10px 0;
   color: #fff;
   font-weight: 400;
+  font-size: 23px;
 `;
 
 const InputWrapper = styled.div`
@@ -28,35 +33,35 @@ const InputWrapper = styled.div`
   flex-direction: column;
   width: 85%;
   max-width: 600px;
-  border-radius: 20px;
+  border-radius: 10px;
   margin-bottom: 25px;
   align-items: center;
-  border: ${({ ipIsInvalid }) => (ipIsInvalid ? '3px solid #df4759' : 'none')};
+  border: ${({ ipIsInvalid, theme }) =>
+    ipIsInvalid ? `3px solid ${theme.colors.warningRed}` : 'none'};
 `;
 
 const InputContainer = styled.div`
   display: flex;
-  min-height: 60px;
   width: 100%;
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
 `;
 
 const Input = styled.input`
   flex-grow: 1;
-  height: 60px;
   border: none;
-  font-size: 18px;
   padding-left: 20px;
   padding-right: 20px;
   font-weight: 300;
   box-sizing: border-box;
+  font-size: 16px;
+  height: 40px;
 `;
 
 const Button = styled.button`
-  height: 60px;
-  width: 60px;
+  height: 40px;
+  width: 40px;
   border: none;
   background: hsl(0, 0%, 17%);
   cursor: pointer;
@@ -64,23 +69,31 @@ const Button = styled.button`
 
 const Error = styled.p`
   display: ${({ ipIsInvalid }) => (ipIsInvalid ? 'block' : 'none')};
-  color: #df4759;
+  color: ${({ theme }) => theme.warningRed};
   padding: 10px;
 `;
 
 const InfoContainer = styled.div`
+  position: absolute;
   display: grid;
-  grid-gap: 22px;
   background: #fff;
   width: 85%;
   max-width: 1200px;
   border-radius: 10px;
-  padding: 25px;
+  padding: 20px;
   z-index: 1000;
-  min-height: 300px;
-  @media (min-width: 768px) {
+  bottom: 0;
+  transform: translateY(60%);
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.breakpoints.mobile}) {
+    padding: 10px 0;
+  }
+  @media only screen and (orientation: landscape) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    min-height: 100px;
+    width: 95%;
+    max-width: 950px;
+    font-size: 12px;
   }
 `;
 
@@ -101,11 +114,11 @@ const Info = styled.div`
   text-align: center;
   width: 100%;
   max-width: 100%;
-  @media (min-width: 768px) {
-    text-align: left;
-    border-right: #d4d4d4 1px solid;
+  padding: 0 5px;
+  @media only screen and (orientation: landscape) {
+    border-right: 1px lightGrey solid;
     :last-of-type {
-      border-right: none;
+      border: none;
     }
   }
 
@@ -121,8 +134,17 @@ const Info = styled.div`
     font-size: 20px;
     font-weight: 400;
     color: hsl(0, 0%, 17%);
-    word-break: break-all;
+    word-break: keep-all;
     white-space: normal;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    h3 {
+      font-size: 8px;
+    }
+    p {
+      font-size: 16px;
+    }
   }
 `;
 
