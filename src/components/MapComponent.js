@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
 import {
@@ -25,6 +25,10 @@ const MapComponentStyled = styled(MapContainer)`
   flex-grow: 1;
 `;
 
+const MarkerStyled = styled(Marker)`
+  z-index: 1000; 
+`;
+
 function MapComponent({ position, IP }) {
   const ChangeView = ({ center, zoom }) => {
     const map = useMap();
@@ -43,18 +47,15 @@ function MapComponent({ position, IP }) {
       doubleClickZoom={false}
       trackResize={true}
     >
-      <ZoomControl position="bottomright"  />
+      <ZoomControl position="bottomright" />
       <ChangeView center={position} zoom={13} />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker icon={markerIcon} position={position}>
+      <MarkerStyled icon={markerIcon} position={position}>
         <Popup>{IP}</Popup>
-      </Marker>
-      <Marker icon={markerIcon} position={position}>
-        <Popup>{IP}</Popup>
-      </Marker>
+      </MarkerStyled>
     </MapComponentStyled>
   );
 }

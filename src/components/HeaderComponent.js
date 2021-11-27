@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import backgroundImg from '../images/pattern-bg.png';
 import { FaChevronRight } from 'react-icons/fa';
@@ -15,14 +15,25 @@ const HeaderComponentStyled = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 35vh;
-  max-height: 225px;
   font-family: ${({ theme }) => theme.font.fontFamily};
-  padding-bottom: 20px;
+  padding-bottom: ${({ infoHeight }) => infoHeight * 0.4 + 20 + 'px'};
+  padding-top: 20px;
+
+  @media only screen and (orientation: landscape) {
+    border-right: 1px lightGrey solid;
+    :last-of-type {
+      border: none;
+    }
+    @media only screen and (min-width: ${({ theme }) =>
+        theme.breakpoints.desktop}) {
+      padding-top: 50px;
+      padding-bottom: ${({ infoHeight }) => infoHeight * 0.4 + 50 + 'px'};
+    }
+  }
 `;
 
 const Header = styled.h1`
-  margin: 10px 0;
+  margin-bottom: 10px;
   color: #fff;
   font-weight: 400;
   font-size: 23px;
@@ -31,18 +42,17 @@ const Header = styled.h1`
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 85%;
-  max-width: 600px;
   border-radius: 10px;
-  margin-bottom: 25px;
+  width: 85%;
   align-items: center;
   border: ${({ ipIsInvalid, theme }) =>
     ipIsInvalid ? `3px solid ${theme.colors.warningRed}` : 'none'};
 `;
 
 const InputContainer = styled.div`
-  display: flex;
   width: 100%;
+  max-width: 400px;
+  display: flex;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
@@ -54,8 +64,7 @@ const Input = styled.input`
   padding-left: 20px;
   padding-right: 20px;
   font-weight: 300;
-  box-sizing: border-box;
-  font-size: 16px;
+  font-size: min(2vmax, 16px);
   height: 40px;
 `;
 
@@ -80,20 +89,14 @@ const InfoContainer = styled.div`
   width: 85%;
   max-width: 1200px;
   border-radius: 10px;
-  padding: 20px;
   z-index: 1000;
   bottom: 0;
   transform: translateY(60%);
-
-  @media only screen and (max-width: ${({ theme }) =>
-      theme.breakpoints.mobile}) {
-    padding: 10px 0;
-  }
+  padding: 10px;
   @media only screen and (orientation: landscape) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 95%;
     max-width: 950px;
-    font-size: 12px;
   }
 `;
 
@@ -114,36 +117,33 @@ const Info = styled.div`
   text-align: center;
   width: 100%;
   max-width: 100%;
-  padding: 0 5px;
-  @media only screen and (orientation: landscape) {
-    border-right: 1px lightGrey solid;
-    :last-of-type {
-      border: none;
-    }
-  }
+  padding: 5px;
+  font-size: 10px;
 
   h3 {
     text-transform: uppercase;
     color: hsl(0, 0%, 59%);
-    font-size: 10px;
+    font-size: min(1.5vmax, 14px);
     margin-bottom: 5px;
     font-weight: 500;
     letter-spacing: 1px;
   }
   p {
-    font-size: 20px;
+    font-size: min(2vmax, 20px);
     font-weight: 400;
     color: hsl(0, 0%, 17%);
     word-break: keep-all;
     white-space: normal;
   }
 
-  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    h3 {
-      font-size: 8px;
+  @media only screen and (orientation: landscape) {
+    border-right: 1px lightGrey solid;
+    :last-of-type {
+      border: none;
     }
-    p {
-      font-size: 16px;
+    @media only screen and (min-width: ${({ theme }) =>
+        theme.breakpoints.desktop}) {
+      padding: 30px;
     }
   }
 `;
@@ -161,10 +161,22 @@ function HeaderComponent({
   ipIsInvalid,
   showError,
 }) {
+  const InfoContainerRef = useRef();
+  const [infoContainerHeight, setInfoContainerHeight] = useState();
+  useEffect(() => {
+    const updateHeight = () => {
+      const height = InfoContainerRef.current.clientHeight;
+      setInfoContainerHeight(height);
+    };
+    window.addEventListener('resize', updateHeight);
+    updateHeight();
+
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
   const { city, isp, ip, timezone } = geo;
 
   return (
-    <HeaderComponentStyled>
+    <HeaderComponentStyled infoHeight={infoContainerHeight}>
       <Header>IP Address Tracker</Header>
       <InputWrapper ipIsInvalid={ipIsInvalid}>
         <InputContainer>
@@ -183,7 +195,7 @@ function HeaderComponent({
         </Error>
       </InputWrapper>
 
-      <InfoContainer>
+      <InfoContainer ref={InfoContainerRef}>
         {isLoading ? (
           <Container>
             <BarLoader />
