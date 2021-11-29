@@ -42,6 +42,7 @@ function App() {
       );
       // if successful save destructured data in state
       const data = await response.json();
+      console.log(data);
 
       setGeo({
         ip: data.ip,
