@@ -6,6 +6,8 @@ import MapComponent from './Components/MapComponent';
 import { validateIPaddress } from './HelperFunctions/validateIpAddress';
 import Theme from './Theme';
 
+const API_KEY = 'fb5060ecc988c3db7cf4a91a4df9120d';
+
 function App() {
   // variable to check if this is the first time app is loading
   const firstUpdate = useRef(true);
