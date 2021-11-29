@@ -6,8 +6,6 @@ import MapComponent from './Components/MapComponent';
 import { validateIPaddress } from './HelperFunctions/validateIpAddress';
 import Theme from './Theme';
 
-let API_KEY;
-
 function App() {
   // variable to check if this is the first time app is loading
   const firstUpdate = useRef(true);
@@ -40,7 +38,7 @@ function App() {
     // try to fetch data from api
     try {
       const response = await fetch(
-        `https://geo.ipify.org/api/v2/country,city?apiKey=${API_KEY}&ipAddress=${ipAddress}`
+        `https://geo.ipify.org/api/v2/country,city?apiKey=${process.env.API_KEY}&ipAddress=${ipAddress}`
       );
       // if successful save destructured data in state
       const data = await response.json();
