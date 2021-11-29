@@ -7,7 +7,6 @@ import { validateIPaddress } from './HelperFunctions/validateIpAddress';
 import Theme from './Theme';
 
 const apiKey = process.env.REACT_APP_API_KEY;
-console.log(apiKey);
 
 function App() {
   // variable to check if this is the first time app is loading
@@ -45,7 +44,6 @@ function App() {
       );
       // if successful save destructured data in state
       const data = await response.json();
-      console.log(data);
 
       setGeo({
         ip: data.ip,
