@@ -42,12 +42,11 @@ function MapComponent({ position, IP }) {
       zoom={13}
       scrollWheelZoom={false}
       zoomControl={false}
-      dragging={true}
-      touchZoom={true}
+      dragging={false}
+      touchZoom={false}
       doubleClickZoom={false}
       trackResize={true}
     >
-      <ZoomControl position="bottomright" />
       <ChangeView center={position} zoom={13} />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
