@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import backgroundImg from '../images/pattern-bg.png';
 import { FaChevronRight } from 'react-icons/fa';
 import BarLoader from 'react-spinners/BarLoader';
+import { validateIPaddress } from '../HelperFunctions/validateIpAddress';
 
 const HeaderComponentStyled = styled.div`
   position: relative;
@@ -49,7 +50,7 @@ const InputWrapper = styled.div`
     ipIsInvalid ? `3px solid ${theme.colors.warningRed}` : 'none'};
 `;
 
-const InputContainer = styled.div`
+const FormStyled = styled.form`
   width: 100%;
   max-width: 400px;
   display: flex;
@@ -87,6 +88,7 @@ const InfoContainer = styled.div`
   display: grid;
   background: #fff;
   width: 85%;
+  min-height: 200px;
   max-width: 1200px;
   border-radius: 10px;
   z-index: 1000;
@@ -97,7 +99,9 @@ const InfoContainer = styled.div`
     grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 95%;
     max-width: 950px;
+    min-height: 50px;
   }
+
 `;
 
 const Container = styled.div`
@@ -152,15 +156,21 @@ const Chevron = styled(FaChevronRight)`
   color: #fff;
 `;
 
-function HeaderComponent({
-  IP,
-  setIP,
-  fetchGeo,
-  geo,
-  isLoading,
-  ipIsInvalid,
-  showError,
-}) {
+function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading, showError }) {
+  const [ipValue, setIpValue] = useState('');
+  const [ipIsInvalid, setIpIsInvalid] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateIPaddress(ipValue)) {
+      setIP(ipValue);
+    } else {
+      setIpIsInvalid(true);
+      setTimeout(() => setIpIsInvalid(false), 3000);
+    }
+  };
+
+  // Dynamically adjust container Height
   const InfoContainerRef = useRef();
   const [infoContainerHeight, setInfoContainerHeight] = useState();
   useEffect(() => {
@@ -169,28 +179,31 @@ function HeaderComponent({
       setInfoContainerHeight(height);
     };
     window.addEventListener('resize', updateHeight);
-    
+
     updateHeight();
 
     return () => window.removeEventListener('resize', updateHeight);
   }, []);
-  const { city, isp, ip, timezone } = geo;
 
   return (
     <HeaderComponentStyled infoHeight={infoContainerHeight}>
       <Header>IP Address Tracker</Header>
       <InputWrapper ipIsInvalid={ipIsInvalid}>
-        <InputContainer>
+        <FormStyled
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+        >
           <Input
-            onChange={(e) => setIP(e.target.value)}
+            onChange={(e) => setIpValue(e.target.value)}
             type="text"
-            value={IP}
+            value={ipValue}
             placeholder="Enter IP Address..."
           />
-          <Button onClick={fetchGeo}>
+          <Button type="submit">
             <Chevron />
           </Button>
-        </InputContainer>
+        </FormStyled>
         <Error ipIsInvalid={ipIsInvalid}>
           Please enter a valid IP address...
         </Error>
@@ -211,19 +224,19 @@ function HeaderComponent({
           <>
             <Info>
               <h3>Ip address</h3>
-              <p>{ip}</p>
+              <p>{geo.ip}</p>
             </Info>
             <Info>
               <h3>Location</h3>
-              <p>{city}</p>
+              <p>{geo.city}</p>
             </Info>
             <Info>
               <h3>Timezone</h3>
-              <p>UTC {timezone}</p>
+              <p>{geo.timezone}</p>
             </Info>
             <Info>
               <h3>Isp</h3>
-              <p>{isp}</p>
+              <p>{geo.isp}</p>
             </Info>
           </>
         )}

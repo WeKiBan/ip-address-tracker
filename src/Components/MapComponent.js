@@ -22,12 +22,14 @@ const MarkerStyled = styled(Marker)`
   z-index: 1000;
 `;
 
-function MapComponent({ position, IP }) {
+function MapComponent({ geo, IP }) {
   const ChangeView = ({ center, zoom }) => {
     const map = useMap();
     map.flyTo(center, zoom);
     return null;
   };
+  const position = geo ? [geo.lat, geo.lng] : [29.34664, -38.28196];
+  const zoom = geo ? 13 : 5;
 
   return (
     <MapComponentStyled
@@ -40,7 +42,7 @@ function MapComponent({ position, IP }) {
       doubleClickZoom={false}
       trackResize={true}
     >
-      <ChangeView center={position} zoom={13} />
+      <ChangeView center={position} zoom={zoom} />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -1,61 +1,33 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import './Reset.css';
 import HeaderComponent from './Components/HeaderComponent';
 import MapComponent from './Components/MapComponent';
-import { validateIPaddress } from './HelperFunctions/validateIpAddress';
+
 import Theme from './Theme';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
 function App() {
+  // variables
   // variable to check if this is the first time app is loading
-  const firstUpdate = useRef(true);
   const [IP, setIP] = useState('');
-  const [geo, setGeo] = useState({
-    ip: '192.212.174.101',
-    isp: 'Southern California Edison',
-    city: 'South San Gabriel',
-    timezone: '-08:00',
-  });
-  // state variables
-  const [position, setPosition] = useState([34.04915, -118.09462]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [ipIsInvalid, setIpIsInvalid] = useState(false);
+  const [geo, setGeo] = useState();
+  const [windowHeight, setWindowHeight] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [showError, setShowError] = useState(false);
 
-  // event listener to set window height
-  const [windowHeight, setWindowHeight] = useState();
-
-  useEffect(() => {
-    const updateHeight = () => {
-      setWindowHeight(window.visualViewport.height);
-    };
-    window.addEventListener('resize', updateHeight);
-
-    updateHeight();
-
-    return () => window.removeEventListener('resize', updateHeight);
-  }, []);
-
-  // async function that fetches data from the api
-  const fetchGeo = async (ipAddress) => {
-    // check to see if input is valid
-    if (!validateIPaddress(ipAddress)) {
-      setIpIsInvalid(true);
-
-      setTimeout(() => setIpIsInvalid(false), 3000);
-      return;
-    }
+  const fetchGeo = async () => {
     // set show error to false to remove any previous errors
     // set loading to true to display loading bar
     setShowError(false);
     setIsLoading(true);
     // try to fetch data from api
     try {
-      const response = await fetch(
-        `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${ipAddress}`
-      );
+      const apiCall = IP
+        ? `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${IP}`
+        : `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;
+      const response = await fetch(apiCall);
       // if successful save destructured data in state
       const data = await response.json();
 
@@ -68,40 +40,44 @@ function App() {
         lng: data.location.lng,
       });
     } catch (e) {
-      //if unsuccessful console.log error and show error message.
+      //if unsuccessful console.error and show error message.
       console.error(e);
       setShowError(true);
     }
     // change loading back to false to hide loading bar
     setIsLoading(false);
-
     return;
   };
+
+  // event listener to set window height
+  useEffect(() => {
+    const updateHeight = () => {
+      setWindowHeight(window.visualViewport.height);
+    };
+    window.addEventListener('resize', updateHeight);
+
+    updateHeight();
+
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
   // useEffect hook to update position on map when geo data is modified.
   useEffect(() => {
-    // check to see if this is the first update of the app if it is change first update to false and dont go any further
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
-    // else set new position
-    const position = [geo.lat, geo.lng];
-    setPosition(position);
-  }, [geo]);
+    fetchGeo();
+     // eslint-disable-next-line
+  }, [IP]);
 
   return (
     <div className="App" style={{ height: windowHeight }}>
       <Theme>
         <HeaderComponent
-          ipIsInvalid={ipIsInvalid}
-          IP={IP}
           setIP={setIP}
-          fetchGeo={() => fetchGeo(IP)}
+          fetchGeo={fetchGeo}
           geo={geo}
           isLoading={isLoading}
           showError={showError}
         />
-        <MapComponent IP={geo.ip} position={position} />
+        <MapComponent geo={geo} />
       </Theme>
     </div>
   );
