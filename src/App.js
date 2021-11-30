@@ -24,6 +24,20 @@ function App() {
   const [ipIsInvalid, setIpIsInvalid] = useState(false);
   const [showError, setShowError] = useState(false);
 
+  // event listener to set window height
+  const [windowHeight, setWindowHeight] = useState();
+
+  useEffect(() => {
+    const updateHeight = () => {
+      setWindowHeight(window.innerHeight);
+    };
+    window.addEventListener('resize', updateHeight);
+
+    updateHeight();
+
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
   // async function that fetches data from the api
   const fetchGeo = async (ipAddress) => {
     // check to see if input is valid
@@ -76,7 +90,7 @@ function App() {
   }, [geo]);
 
   return (
-    <div className="App">
+    <div className="App" style={{ height: windowHeight }}>
       <Theme>
         <HeaderComponent
           ipIsInvalid={ipIsInvalid}

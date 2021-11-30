@@ -169,6 +169,7 @@ function HeaderComponent({
       setInfoContainerHeight(height);
     };
     window.addEventListener('resize', updateHeight);
+    
     updateHeight();
 
     return () => window.removeEventListener('resize', updateHeight);

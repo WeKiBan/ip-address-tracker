@@ -1,14 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  ZoomControl,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import locationIcon from '../images/icon-location.svg';
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -26,7 +19,7 @@ const MapComponentStyled = styled(MapContainer)`
 `;
 
 const MarkerStyled = styled(Marker)`
-  z-index: 1000; 
+  z-index: 1000;
 `;
 
 function MapComponent({ position, IP }) {
