@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     const updateHeight = () => {
-      setWindowHeight(window.innerHeight);
+      setWindowHeight(window.visualViewport.height);
     };
     window.addEventListener('resize', updateHeight);
 
