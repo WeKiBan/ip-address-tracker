@@ -24,6 +24,7 @@ function App() {
     setIsLoading(true);
     // try to fetch data from api
     try {
+      //if no IP is set call without ip Address to retrieve users details
       const apiCall = IP
         ? `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${IP}`
         : `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;

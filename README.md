@@ -1,4 +1,4 @@
-# Frontend Mentor - IP address tracker solution
+# IP Address Tracker App
 
 This is a solution to the [IP address tracker challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/ip-address-tracker-I8-0yYAH0).
 
@@ -90,6 +90,7 @@ const fetchGeo = async () => {
     setIsLoading(true);
     // try to fetch data from api
     try {
+      //if no IP is set call without ip Address to retrieve users details
       const apiCall = IP
         ? `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${IP}`
         : `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;
