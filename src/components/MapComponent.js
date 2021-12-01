@@ -35,7 +35,7 @@ function MapComponent({ geo, IP }) {
   const ChangeView = ({ center, zoom }) => {
     const map = useMap();
 
-    map.setView(center, zoom);
+    map.flyTo(center, zoom);
 
     return null;
   };

@@ -29,7 +29,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](src/images/ipTrackerScreenshot.png)
+![](src/images/demoGif.gif)
 
 ### Links
 
