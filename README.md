@@ -136,6 +136,8 @@ I learned a lot during this process and it has helped to further improve my know
 
 ### Continued development
 
+I would love to make the flyTo feature smoother, however I think this is a limitation of the Leaflet API so perhaps I could try to use the Google Maps API instead of Leaflet.
+
 ### Useful resources
 
 - [Mapping With React Leaflet](https://egghead.io/courses/mapping-with-react-leaflet-e0e0) - This helped me to understand how to use the React Leaflet API would definitely recommend this course to anyone else looking to utilise it in their project.
