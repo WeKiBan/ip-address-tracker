@@ -143,5 +143,5 @@ I learned a lot during this process and it has helped to further improve my know
 
 ## Author
 
-- Website - [Wes Banyard](https://www.wesbanyard.dev)
-- LinkedIn - [](https://www.linkedin.com/in/wes-banyard/)
+- [My Portfolio](https://www.wesbanyard.dev)
+- [My LinkedIn](https://www.linkedin.com/in/wes-banyard/)
