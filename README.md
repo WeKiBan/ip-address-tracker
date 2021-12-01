@@ -42,30 +42,78 @@ Users should be able to:
 
 - HTML/CSS
 - Flexbox
+- Grid
 - [React](https://reactjs.org/) - JS library
-- [Styled Components](https://styled-components.com/) - For styles.
-- [IPify](https://www.ipify.org/) - For IP address API.
+- [Styled Components](https://styled-components.com/) - For Styling.
+- [React Leaflet](https://react-leaflet.js.org/) Map API
+- [IPify](https://www.ipify.org/) - IP Address API
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+While creating this project I learned how to use the Leaflet Map API. As Leaflet has a React version it is very easy to implement. After installing the dependency you can import the components just like any other React component and then use these to create the map.
 
-To see how you can add code snippets, see below:
-
-```html
-<h1>Some HTML code I'm proud of</h1>
+```javaScript
+    <MapComponentStyled
+      center={position}
+      zoom={13}
+      scrollWheelZoom={false}
+      zoomControl={false}
+      dragging={false}
+      touchZoom={false}
+      doubleClickZoom={false}
+      trackResize={true}
+    >
+      <ChangeView center={position} zoom={zoom} />
+      <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <MarkerStyled icon={markerIcon} position={position}>
+        <Popup>{IP}</Popup>
+      </MarkerStyled>
+    </MapComponentStyled>
 ```
 
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
+The location on this map is updated on the initial load providing the users IP address info and then subsequently each time the user enters an IP into the input.
+
+```javaScript
+ useEffect(() => {
+    fetchGeo();
+  }, [IP]);
 ```
 
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉');
-};
+```javaScript
+const fetchGeo = async () => {
+    // set show error to false to remove any previous errors
+    // set loading to true to display loading bar
+    setShowError(false);
+    setIsLoading(true);
+    // try to fetch data from api
+    try {
+      const apiCall = IP
+        ? `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${IP}`
+        : `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;
+      const response = await fetch(apiCall);
+      // if successful save destructured data in state
+      const data = await response.json();
+
+      setGeo({
+        ip: data.ip,
+        isp: data.isp,
+        city: data.location.city,
+        timezone: data.location.timezone,
+        lat: data.location.lat,
+        lng: data.location.lng,
+      });
+    } catch (e) {
+      //if unsuccessful console.error and show error message.
+      console.error(e);
+      setShowError(true);
+    }
+    // change loading back to false to hide loading bar
+    setIsLoading(false);
+    return;
+  };
 ```
 
 If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
@@ -98,3 +146,7 @@ Use this section to outline areas that you want to continue focusing on in futur
 This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
 
 **Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+
+```
+
+```

@@ -157,24 +157,33 @@ const Chevron = styled(FaChevronRight)`
 `;
 
 function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading, showError }) {
+
+  // variables and refs
+  const InfoContainerRef = useRef();
   const [ipValue, setIpValue] = useState('');
   const [ipIsInvalid, setIpIsInvalid] = useState(false);
+  const [infoContainerHeight, setInfoContainerHeight] = useState();
 
+  // handle submit function 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // checks to see if ip address is valid
     if (validateIPaddress(ipValue)) {
+      // if Valid set IP and trigger fetch 
       setIP(ipValue);
     } else {
+      // otherwise show error message 
       setIpIsInvalid(true);
+      // remove error message after 3 seconds
       setTimeout(() => setIpIsInvalid(false), 3000);
     }
   };
 
   // Dynamically adjust container Height
-  const InfoContainerRef = useRef();
-  const [infoContainerHeight, setInfoContainerHeight] = useState();
   useEffect(() => {
+    // handler function to update the container height
     const updateHeight = () => {
+      //finds current height then sets the height in state
       const height = InfoContainerRef.current.clientHeight;
       setInfoContainerHeight(height);
     };
