@@ -96,12 +96,12 @@ const InfoContainer = styled.div`
   transform: translateY(60%);
   padding: 10px;
   @media only screen and (orientation: landscape) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: ${({ isLoading }) =>
+      isLoading ? '1fr' : '1fr 1fr 1fr 1fr'};
     width: 95%;
     max-width: 950px;
     min-height: 50px;
   }
-
 `;
 
 const Container = styled.div`
@@ -209,7 +209,7 @@ function HeaderComponent({ IP, setIP, fetchGeo, geo, isLoading, showError }) {
         </Error>
       </InputWrapper>
 
-      <InfoContainer ref={InfoContainerRef}>
+      <InfoContainer isLoading={isLoading} ref={InfoContainerRef}>
         {isLoading ? (
           <Container>
             <BarLoader />

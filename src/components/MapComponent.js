@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -23,9 +23,20 @@ const MarkerStyled = styled(Marker)`
 `;
 
 function MapComponent({ geo, IP }) {
+  const firstUpdate = useRef(true);
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+  }, []);
+
   const ChangeView = ({ center, zoom }) => {
     const map = useMap();
-    map.flyTo(center, zoom);
+
+    map.setView(center, zoom);
+
     return null;
   };
   const position = geo ? [geo.lat, geo.lng] : [29.34664, -38.28196];
