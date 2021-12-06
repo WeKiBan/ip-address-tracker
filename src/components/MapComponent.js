@@ -23,12 +23,12 @@ const MarkerStyled = styled(Marker)`
 `;
 
 function MapComponent({ geo, IP }) {
-
   const ChangeView = ({ center, zoom }) => {
     const map = useMap();
     map.flyTo(center, zoom);
     return null;
   };
+
   const position = geo ? [geo.lat, geo.lng] : [29.34664, -38.28196];
   const zoom = geo ? 13 : 5;
 

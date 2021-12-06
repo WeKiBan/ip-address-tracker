@@ -3,10 +3,11 @@ import './App.css';
 import './Reset.css';
 import HeaderComponent from './Components/HeaderComponent';
 import MapComponent from './Components/MapComponent';
+import { fetchData } from './HelperFunctions/fetchApiData';
 
 import Theme from './Theme';
 
-const apiKey = process.env.REACT_APP_API_KEY;
+
 
 function App() {
   // variables
@@ -17,20 +18,15 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showError, setShowError] = useState(false);
 
-  const fetchGeo = async () => {
+  const handleFetchData = async () => {
     // set show error to false to remove any previous errors
     // set loading to true to display loading bar
     setShowError(false);
     setIsLoading(true);
     // try to fetch data from api
     try {
-      //if no IP is set call without ip Address to retrieve users details
-      const apiCall = IP
-        ? `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${IP}`
-        : `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;
-      const response = await fetch(apiCall);
-      // if successful save destructured data in state
-      const data = await response.json();
+      const res = await fetchData(IP);
+      const data = await res.json();
 
       setGeo({
         ip: data.ip,
@@ -64,8 +60,8 @@ function App() {
 
   // useEffect hook to update position on map when geo data is modified.
   useEffect(() => {
-    fetchGeo();
-     // eslint-disable-next-line
+    handleFetchData(IP);
+    // eslint-disable-next-line
   }, [IP]);
 
   return (
@@ -73,7 +69,7 @@ function App() {
       <Theme>
         <HeaderComponent
           setIP={setIP}
-          fetchGeo={fetchGeo}
+          handleFetchData={handleFetchData}
           geo={geo}
           isLoading={isLoading}
           showError={showError}
