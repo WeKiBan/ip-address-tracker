@@ -141,9 +141,4 @@ I would love to make the flyTo feature smoother, however I think this is a limit
 ### Useful resources
 
 - [Mapping With React Leaflet](https://egghead.io/courses/mapping-with-react-leaflet-e0e0) - This helped me to understand how to use the React Leaflet API would definitely recommend this course to anyone else looking to utilise it in their project.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
 
-## Author
-
-- [My Portfolio](https://www.wesbanyard.dev)
-- [My LinkedIn](https://www.linkedin.com/in/wes-banyard/)
